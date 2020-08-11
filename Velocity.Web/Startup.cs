@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Velocity.Core.Interfaces;
+using Velocity.Core.Repository;
+using Velocity.Data;
 
 namespace Velocity.Web
 {
@@ -24,6 +27,7 @@ namespace Velocity.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<ICrudRepository<Client>, ClientRepository>(e => new ClientRepository(new VelocityContext()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
