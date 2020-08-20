@@ -18,6 +18,22 @@ namespace Velocity.Data
         {
             optionsBuilder.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Velocity");
         }
+
+        public DbSet<TEntity> GetDbSetFor<TEntity>(Type model)
+            where TEntity : class
+        {
+            // ver Clients = GetDbSetFor<>(typeof(Client))
+
+
+            if (model is null)
+            {
+                return null;
+            }
+
+            var entity = this.Set<TEntity>();
+            return entity;
+
+        }
     }
 
     // may implement later for auditing records
