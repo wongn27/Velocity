@@ -13,6 +13,7 @@ namespace Velocity.Data
         public DbSet<Container> Containers { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Transit> Transits { get; set; }
+        public DbSet<Fee> Fees { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -34,6 +35,13 @@ namespace Velocity.Data
             return entity;
 
         }
+    }
+
+    public class Fee
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public decimal DefaultAmount { get; set; }
     }
 
     // may implement later for auditing records
@@ -102,6 +110,8 @@ namespace Velocity.Data
 
         public Container Container { get; set; } // weight and packages gets propagated
 
+        public decimal Rate { get; set; }
+
         [Required]
         [StringLength(400)]
         [DisplayName("Reference Number")]
@@ -114,30 +124,15 @@ namespace Velocity.Data
         [Description("The fee associated with renting the container.")]
         public decimal ContainerFee { get; set; }
 
-        [Required]
-        [DisplayName("Chassis Fee")]
-        [Description("The fee with renting the chassis for the container.")]
-        public decimal ChassisFee { get; set; }
-
         [NotMapped]
         [DisplayName("Chassis Days")]
         [Description("The number of days the chassis is rented.")]
         public int ChassisDaysCount { get; }
 
-        [Required]
-        [DisplayName("Parking Fee")]
-        [Description("The fee associated with parking the truck.")]
-        public decimal ParkingFee { get; set; }
-
         [NotMapped]
         [DisplayName("Parking Days")]
         [Description("The number of days the truck is parked for.")]
         public int ParkingDaysCount { get; }
-
-        [Required]
-        [DisplayName("Congestion Fee")]
-        [Description("The congestion fee.")]
-        public decimal CongestionFee { get; set; }
 
         [NotMapped]
         [DisplayName("Total Invoice")]
@@ -182,9 +177,9 @@ namespace Velocity.Data
         [Description("The weight of the container.")]
         public float? Weight { get; set; }
 
-        [DisplayName("Number of Packages")]
-        [Description("The number of packages contained in the container.")]
-        public int PackagesCount { get; set; }
+        [DisplayName("Number of Cartons")]
+        [Description("The number of cartons contained in the container.")]
+        public int CartonsCount { get; set; }
     }
 
     public class Client
