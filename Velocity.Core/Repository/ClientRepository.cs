@@ -45,7 +45,7 @@ namespace Velocity.Core.Repository
                 throw new ArgumentNullException(nameof(model));
             }
 
-            Client client = Get(model.Id);
+            var client = Get(model.Id);
 
             if (client is null)
             {
@@ -53,11 +53,25 @@ namespace Velocity.Core.Repository
             }
 
             context.Clients.Remove(client);
+            context.SaveChanges();
         }
 
-        public Task DeleteAsync(Client model)
+        public async Task DeleteAsync(Client model)
         {
-            throw new NotImplementedException();
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var client = await GetAsync(model.Id);
+
+            if (client is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            context.Clients.Remove(client);
+            await context.SaveChangesAsync();
         }
 
         public Client Get(Guid id)
@@ -93,7 +107,7 @@ namespace Velocity.Core.Repository
                 throw new ArgumentNullException(nameof(model));
             }
 
-            Client client = Get(model.Id);
+            var client = Get(model.Id);
 
             if (client is null)
             {
@@ -111,7 +125,7 @@ namespace Velocity.Core.Repository
                 throw new ArgumentNullException(nameof(model));
             }
 
-            Client client = Get(model.Id);
+            var client = await GetAsync(model.Id);
 
             if (client is null)
             {
