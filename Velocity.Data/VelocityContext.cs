@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Velocity.Data.Enums;
+using Velocity.Data.Interfaces;
 
 namespace Velocity.Data
 {
@@ -12,8 +14,10 @@ namespace Velocity.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<Container> Containers { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
         public DbSet<Transit> Transits { get; set; }
         public DbSet<Fee> Fees { get; set; }
+        public DbSet<Driver> Drivers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -23,15 +27,37 @@ namespace Velocity.Data
         public DbSet<TEntity> GetDbSetFor<TEntity>()
             where TEntity : class
         {
-            var entity = this.Set<TEntity>();
+            DbSet<TEntity> entity = this.Set<TEntity>();
             return entity;
         }
     }
 
-    public class Fee
+
+    public class Driver : IIdentity
     {
         public Guid Id { get; set; }
+        [Required]
+        [DisplayName("First Name")]
+        [Description("The first name of the driver.")]
+        public string FirstName { get; set; }
+        [Required]
+        [DisplayName("Last Name")]
+        [Description("The last name of the driver.")]
+        public string LastName { get; set; }
+    }
+
+    public class Fee : IIdentity
+    {
+        public Guid Id { get; set; }
+
+        [Required]
+        [DisplayName("Name")]
+        [Description("The name of the fee.")]
         public string Name { get; set; }
+
+        [Required]
+        [DisplayName("Default Amount")]
+        [Description("The default amount for this fee.")]
         public decimal DefaultAmount { get; set; }
     }
 
@@ -49,7 +75,7 @@ namespace Velocity.Data
     }
 
     // Computed table
-    public class Transit
+    public class Transit : IIdentity
     {
         public Guid Id { get; set; }
 
@@ -69,7 +95,73 @@ namespace Velocity.Data
         public bool IsPending { get; set; }
     }
 
-    public class Invoice
+    public class InvoiceDetail : IIdentity
+    {
+        public Guid Id { get; set; }
+
+        [Required]
+        public Invoice Invoice { get; set; }
+
+        public int Quantity { get; set; }
+
+        [NotMapped]
+        public string Description { get; }
+
+        public Container Container { get; set; }
+
+        [Required]
+        [DisplayName("Rate")]
+        [Description("The rate for this invoice detail entry.")]
+        public decimal Rate { get; set; }
+
+        [Required]
+        [DisplayName("Amount")]
+        [Description("The amount for this invoice detail entry.")]
+        public decimal Amount { get; set; }
+
+        [Required]
+        [StringLength(400)]
+        [DisplayName("Master Number")]
+        [Description("The steamship line unique identifer.")]
+        public string MasterNumber { get; set; }
+
+        [Required]
+        [StringLength(400)]
+        [DisplayName("House Number")]
+        [Description("The optional steamship line unique identifer extension.")]
+        public string HouseNumber { get; set; }
+
+        [Required]
+        [StringLength(400)]
+        [DisplayName("Pick Up")]
+        [Description("The pick up location of the container. Can be from the terminal or steamship line.")]
+        public string FromAddress { get; set; }
+
+        [Required]
+        [StringLength(400)]
+        [DisplayName("Drop Off")]
+        [Description("The drop off location of the container.")]
+        public string ToAddress { get; set; }
+
+        [Required]
+        [Timestamp]
+        [DisplayName("Fee From Date")]
+        [Description("The beginning date for the fee.")]
+        public DateTime FeeFromDate { get; set; }
+
+        [Required]
+        [Timestamp]
+        [DisplayName("Fee To Date")]
+        [Description("The end date for the fee.")]
+        public DateTime FeeToDate { get; set; }
+
+        [StringLength(400)]
+        [DisplayName("Reference Number")]
+        [Description("The reference number as part of the invoice.")]
+        public string ReferenceNumber { get; set; }
+    }
+
+    public class Invoice : IIdentity
     {
         public Guid Id { get; set; }
 
@@ -87,75 +179,21 @@ namespace Velocity.Data
         [Required]
         public Client Client { get; set; }
 
-        [Required]
-        [StringLength(400)]
-        [DisplayName("Master Number")]
-        [Description("The steamship line unique identifer.")]
-        public string MasterNumber { get; set; }
+        public IEnumerable<InvoiceDetail> InvoiceDetails { get; set; }
 
         [Required]
-        [StringLength(400)]
-        [DisplayName("House Number")]
-        [Description("The optional steamship line unique identifer extension.")]
-        public string HouseNumber { get; set; }
-
-        public Container Container { get; set; } // weight and packages gets propagated
-
-        public decimal Rate { get; set; }
+        [StringLength(50)]
+        [DisplayName("Terms")]
+        [Description("The terms for the invoice.")]
+        public string Terms { get; set; }
 
         [Required]
-        [StringLength(400)]
-        [DisplayName("Reference Number")]
-        [Description("The reference number as part of the invoice.")] 
-        public string ReferenceNumber { get; set; }
-
-        [Required]
-        [Timestamp]
-        [DisplayName("Container Fee")]
-        [Description("The fee associated with renting the container.")]
-        public decimal ContainerFee { get; set; }
-
-        [NotMapped]
-        [DisplayName("Chassis Days")]
-        [Description("The number of days the chassis is rented.")]
-        public int ChassisDaysCount { get; }
-
-        [NotMapped]
-        [DisplayName("Parking Days")]
-        [Description("The number of days the truck is parked for.")]
-        public int ParkingDaysCount { get; }
-
-        [NotMapped]
         [DisplayName("Total Invoice")]
         [Description("The total invoice of days the chassis is rented.")]
-        public decimal TotalInvoice { get; }
-
-        [Required]
-        [StringLength(400)]
-        [DisplayName("Pick Up")]
-        [Description("The pick up location of the container.")]
-        public string FromAddress { get; set; }
-
-        [Required]
-        [StringLength(400)]
-        [DisplayName("Drop Off")]
-        [Description("The drop off location of the container.")]
-        public string ToAddress { get; set; }
-
-        [Required]
-        [Timestamp]
-        [DisplayName("Drop Off Date")]
-        [Description("The drop off time of the container.")]
-        public DateTime FromDate { get; set; }
-
-        [Required]
-        [Timestamp]
-        [DisplayName("Pick Up Date")]
-        [Description("The pick up time of the container.")]
-        public DateTime ToDate { get; set; }
+        public decimal TotalInvoice { get; set; }
     }
 
-    public class Container
+    public class Container : IIdentity
     {
         public Guid Id { get; set; }
 
@@ -164,16 +202,18 @@ namespace Velocity.Data
         [Description("The unique number of the container.")]
         public string ContainerNumber { get; set; }
 
+        [Required]
         [DisplayName("Weight")]
         [Description("The weight of the container.")]
         public float? Weight { get; set; }
 
+        [Required]
         [DisplayName("Number of Cartons")]
         [Description("The number of cartons contained in the container.")]
         public int CartonsCount { get; set; }
     }
 
-    public class Client
+    public class Client : IIdentity
     {
         public Guid Id { get; set; }
 
