@@ -11,13 +11,23 @@
         Ready,
 
         /// <summary>
-        /// Currently driving the truck to transport the container.
+        /// Currently driving the truck to transport the container to the client.
         /// </summary>
         InTransit,
 
         /// <summary>
         /// The driver has successfully delivered the container to client location.
         /// </summary>
-        Delivered
+        Delivered,
+
+        /// <summary>
+        /// The driver is picking up an empty container that was left at the client location.
+        /// </summary>
+        PickUpEmpty,
+
+        /// <summary>
+        /// The driver has successfully dropped off the empty container
+        /// </summary>
+        DropOffEmpty
     }
 }
