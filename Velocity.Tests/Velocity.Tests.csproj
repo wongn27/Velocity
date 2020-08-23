@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Velocity.Core\Velocity.Core.csproj" />
     <ProjectReference Include="..\Velocity.Data\Velocity.Data.csproj" />
   </ItemGroup>
 
