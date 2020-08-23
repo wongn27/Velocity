@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Velocity.Core.Interfaces;
 using Velocity.Core.Repository;
 using Velocity.Data;
 
@@ -27,7 +21,13 @@ namespace Velocity.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddScoped<ICrudRepository<Client>, ClientRepository>(e => new ClientRepository(new VelocityContext()));
+            services.AddScoped<VelocityContext>();
+            services.AddScoped<ClientRepository>();
+            services.AddScoped<ContainerRepository>();
+            services.AddScoped<DriverRepository>();
+            services.AddScoped<FeeRepository>();
+            services.AddScoped<InvoiceRepository>();
+            services.AddScoped<TransitRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
