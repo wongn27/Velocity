@@ -7,22 +7,22 @@ using Velocity.Data;
 
 namespace Velocity.Web.Controllers
 {
-    public class ContainerController : Controller
+    public class InvoiceController : Controller
     {
-        private readonly ContainerRepository containerRepository;
+        private readonly InvoiceRepository invoiceRepository;
 
-        public ContainerController(ContainerRepository containerRepository)
+        public InvoiceController(InvoiceRepository InvoiceRepository)
         {
-            this.containerRepository = containerRepository;
+            this.invoiceRepository = InvoiceRepository;
         }
 
-        // GET: Container
+        // GET: Invoice
         public async Task<IActionResult> Index()
         {
-            return View(await containerRepository.GetAllAsync());
+            return View(await invoiceRepository.GetAllAsync());
         }
 
-        // GET: Container/Details/5
+        // GET: Invoice/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -30,38 +30,38 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            var invoice = await invoiceRepository.GetAsync(id.Value);
+            if (invoice == null)
             {
                 return NotFound();
             }
 
-            return View(container);
+            return View(invoice);
         }
 
-        // GET: Container/Create
+        // GET: Invoice/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Container/Create
+        // POST: Invoice/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ContainerNumber,Weight,CartonsCount")] Container container)
+        public async Task<IActionResult> Create([Bind("Id,InvoiceNumber,Weight,CartonsCount")] Invoice invoice)
         {
             if (ModelState.IsValid)
             {
-                container.Id = Guid.NewGuid();
-                await containerRepository.CreateAsync(container);
+                invoice.Id = Guid.NewGuid();
+                await invoiceRepository.CreateAsync(invoice);
                 return RedirectToAction(nameof(Index));
             }
-            return View(container);
+            return View(invoice);
         }
 
-        // GET: Container/Edit/5
+        // GET: Invoice/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -69,22 +69,22 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            var invoice = await invoiceRepository.GetAsync(id.Value);
+            if (invoice == null)
             {
                 return NotFound();
             }
-            return View(container);
+            return View(invoice);
         }
 
-        // POST: Container/Edit/5
+        // POST: Invoice/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,ContainerNumber,Weight,CartonsCount")] Container container)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,InvoiceNumber,Weight,CartonsCount")] Invoice invoice)
         {
-            if (id != container.Id)
+            if (id != invoice.Id)
             {
                 return NotFound();
             }
@@ -93,11 +93,11 @@ namespace Velocity.Web.Controllers
             {
                 try
                 {
-                    await containerRepository.UpdateAsync(container);
+                    await invoiceRepository.UpdateAsync(invoice);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ContainerExists(container.Id))
+                    if (!InvoiceExists(invoice.Id))
                     {
                         return NotFound();
                     }
@@ -108,10 +108,10 @@ namespace Velocity.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(container);
+            return View(invoice);
         }
 
-        // GET: Container/Delete/5
+        // GET: Invoice/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -119,28 +119,28 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            var invoice = await invoiceRepository.GetAsync(id.Value);
+            if (invoice == null)
             {
                 return NotFound();
             }
 
-            return View(container);
+            return View(invoice);
         }
 
-        // POST: Container/Delete/5
+        // POST: Invoice/Delete/5
         [HttpPost, ActionName(nameof(Delete))]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            Container container = await containerRepository.GetAsync(id);
-            await containerRepository.DeleteAsync(container);
+            var invoice = await invoiceRepository.GetAsync(id);
+            await invoiceRepository.DeleteAsync(invoice);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ContainerExists(Guid id)
+        private bool InvoiceExists(Guid id)
         {
-            return containerRepository.Get(id) != null;
+            return invoiceRepository.Get(id) != null;
         }
     }
 }

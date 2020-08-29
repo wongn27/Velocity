@@ -1,28 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Velocity.Core.Repository;
 using Velocity.Data;
 
 namespace Velocity.Web.Controllers
 {
-    public class ContainerController : Controller
+    public class ClientController : Controller
     {
-        private readonly ContainerRepository containerRepository;
+        private readonly ClientRepository clientRepository;
 
-        public ContainerController(ContainerRepository containerRepository)
+        public ClientController(ClientRepository clientRepository)
         {
-            this.containerRepository = containerRepository;
+            this.clientRepository = clientRepository;
         }
 
-        // GET: Container
+        // GET: Client
         public async Task<IActionResult> Index()
         {
-            return View(await containerRepository.GetAllAsync());
+            return View(await clientRepository.GetAllAsync());
         }
 
-        // GET: Container/Details/5
+        // GET: Client/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -30,38 +33,38 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            var client = await clientRepository.GetAsync(id.Value);
+            if (client == null)
             {
                 return NotFound();
             }
 
-            return View(container);
+            return View(client);
         }
 
-        // GET: Container/Create
+        // GET: Client/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Container/Create
+        // POST: Client/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ContainerNumber,Weight,CartonsCount")] Container container)
+        public async Task<IActionResult> Create([Bind("Id,CompanyName,Address,State,ZipCode,Email,PhoneNumber")] Client client)
         {
             if (ModelState.IsValid)
             {
-                container.Id = Guid.NewGuid();
-                await containerRepository.CreateAsync(container);
+                client.Id = Guid.NewGuid();
+                await clientRepository.CreateAsync(client);
                 return RedirectToAction(nameof(Index));
             }
-            return View(container);
+            return View(client);
         }
 
-        // GET: Container/Edit/5
+        // GET: Client/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -69,22 +72,22 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            var client = await clientRepository.GetAsync(id.Value);
+            if (client == null)
             {
                 return NotFound();
             }
-            return View(container);
+            return View(client);
         }
 
-        // POST: Container/Edit/5
+        // POST: Client/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,ContainerNumber,Weight,CartonsCount")] Container container)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,CompanyName,Address,State,ZipCode,Email,PhoneNumber")] Client client)
         {
-            if (id != container.Id)
+            if (id != client.Id)
             {
                 return NotFound();
             }
@@ -93,11 +96,11 @@ namespace Velocity.Web.Controllers
             {
                 try
                 {
-                    await containerRepository.UpdateAsync(container);
+                    await clientRepository.UpdateAsync(client);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ContainerExists(container.Id))
+                    if (!ClientExists(client.Id))
                     {
                         return NotFound();
                     }
@@ -108,10 +111,10 @@ namespace Velocity.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(container);
+            return View(client);
         }
 
-        // GET: Container/Delete/5
+        // GET: Client/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -119,28 +122,28 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            var client = await clientRepository.GetAsync(id.Value);
+            if (client == null)
             {
                 return NotFound();
             }
 
-            return View(container);
+            return View(client);
         }
 
-        // POST: Container/Delete/5
+        // POST: Client/Delete/5
         [HttpPost, ActionName(nameof(Delete))]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            Container container = await containerRepository.GetAsync(id);
-            await containerRepository.DeleteAsync(container);
+            var client = await clientRepository.GetAsync(id);
+            await clientRepository.DeleteAsync(client);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ContainerExists(Guid id)
+        private bool ClientExists(Guid id)
         {
-            return containerRepository.Get(id) != null;
+            return clientRepository.Get(id) != null;
         }
     }
 }

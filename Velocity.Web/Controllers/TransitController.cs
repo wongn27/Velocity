@@ -7,22 +7,22 @@ using Velocity.Data;
 
 namespace Velocity.Web.Controllers
 {
-    public class ContainerController : Controller
+    public class TransitController : Controller
     {
-        private readonly ContainerRepository containerRepository;
+        private readonly TransitRepository TransitRepository;
 
-        public ContainerController(ContainerRepository containerRepository)
+        public TransitController(TransitRepository TransitRepository)
         {
-            this.containerRepository = containerRepository;
+            this.TransitRepository = TransitRepository;
         }
 
-        // GET: Container
+        // GET: Transit
         public async Task<IActionResult> Index()
         {
-            return View(await containerRepository.GetAllAsync());
+            return View(await TransitRepository.GetAllAsync());
         }
 
-        // GET: Container/Details/5
+        // GET: Transit/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -30,38 +30,38 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            var Transit = await TransitRepository.GetAsync(id.Value);
+            if (Transit == null)
             {
                 return NotFound();
             }
 
-            return View(container);
+            return View(Transit);
         }
 
-        // GET: Container/Create
+        // GET: Transit/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Container/Create
+        // POST: Transit/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ContainerNumber,Weight,CartonsCount")] Container container)
+        public async Task<IActionResult> Create([Bind("Id,TransitNumber,Weight,CartonsCount")] Transit Transit)
         {
             if (ModelState.IsValid)
             {
-                container.Id = Guid.NewGuid();
-                await containerRepository.CreateAsync(container);
+                Transit.Id = Guid.NewGuid();
+                await TransitRepository.CreateAsync(Transit);
                 return RedirectToAction(nameof(Index));
             }
-            return View(container);
+            return View(Transit);
         }
 
-        // GET: Container/Edit/5
+        // GET: Transit/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -69,22 +69,22 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            var Transit = await TransitRepository.GetAsync(id.Value);
+            if (Transit == null)
             {
                 return NotFound();
             }
-            return View(container);
+            return View(Transit);
         }
 
-        // POST: Container/Edit/5
+        // POST: Transit/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,ContainerNumber,Weight,CartonsCount")] Container container)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,TransitNumber,Weight,CartonsCount")] Transit Transit)
         {
-            if (id != container.Id)
+            if (id != Transit.Id)
             {
                 return NotFound();
             }
@@ -93,11 +93,11 @@ namespace Velocity.Web.Controllers
             {
                 try
                 {
-                    await containerRepository.UpdateAsync(container);
+                    await TransitRepository.UpdateAsync(Transit);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ContainerExists(container.Id))
+                    if (!TransitExists(Transit.Id))
                     {
                         return NotFound();
                     }
@@ -108,10 +108,10 @@ namespace Velocity.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(container);
+            return View(Transit);
         }
 
-        // GET: Container/Delete/5
+        // GET: Transit/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -119,28 +119,28 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            var Transit = await TransitRepository.GetAsync(id.Value);
+            if (Transit == null)
             {
                 return NotFound();
             }
 
-            return View(container);
+            return View(Transit);
         }
 
-        // POST: Container/Delete/5
+        // POST: Transit/Delete/5
         [HttpPost, ActionName(nameof(Delete))]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            Container container = await containerRepository.GetAsync(id);
-            await containerRepository.DeleteAsync(container);
+            var Transit = await TransitRepository.GetAsync(id);
+            await TransitRepository.DeleteAsync(Transit);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ContainerExists(Guid id)
+        private bool TransitExists(Guid id)
         {
-            return containerRepository.Get(id) != null;
+            return TransitRepository.Get(id) != null;
         }
     }
 }

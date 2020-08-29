@@ -7,22 +7,22 @@ using Velocity.Data;
 
 namespace Velocity.Web.Controllers
 {
-    public class ContainerController : Controller
+    public class DriverController : Controller
     {
-        private readonly ContainerRepository containerRepository;
+        private readonly DriverRepository driverRepository;
 
-        public ContainerController(ContainerRepository containerRepository)
+        public DriverController(DriverRepository DriverRepository)
         {
-            this.containerRepository = containerRepository;
+            this.driverRepository = DriverRepository;
         }
 
-        // GET: Container
+        // GET: Driver
         public async Task<IActionResult> Index()
         {
-            return View(await containerRepository.GetAllAsync());
+            return View(await driverRepository.GetAllAsync());
         }
 
-        // GET: Container/Details/5
+        // GET: Driver/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -30,38 +30,38 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            Driver driver = await driverRepository.GetAsync(id.Value);
+            if (driver == null)
             {
                 return NotFound();
             }
 
-            return View(container);
+            return View(driver);
         }
 
-        // GET: Container/Create
+        // GET: Driver/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Container/Create
+        // POST: Driver/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ContainerNumber,Weight,CartonsCount")] Container container)
+        public async Task<IActionResult> Create([Bind("Id,DriverNumber,Weight,CartonsCount")] Driver driver)
         {
             if (ModelState.IsValid)
             {
-                container.Id = Guid.NewGuid();
-                await containerRepository.CreateAsync(container);
+                driver.Id = Guid.NewGuid();
+                await driverRepository.CreateAsync(driver);
                 return RedirectToAction(nameof(Index));
             }
-            return View(container);
+            return View(driver);
         }
 
-        // GET: Container/Edit/5
+        // GET: Driver/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -69,22 +69,22 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            var driver = await driverRepository.GetAsync(id.Value);
+            if (driver == null)
             {
                 return NotFound();
             }
-            return View(container);
+            return View(driver);
         }
 
-        // POST: Container/Edit/5
+        // POST: Driver/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,ContainerNumber,Weight,CartonsCount")] Container container)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,DriverNumber,Weight,CartonsCount")] Driver driver)
         {
-            if (id != container.Id)
+            if (id != driver.Id)
             {
                 return NotFound();
             }
@@ -93,11 +93,11 @@ namespace Velocity.Web.Controllers
             {
                 try
                 {
-                    await containerRepository.UpdateAsync(container);
+                    await driverRepository.UpdateAsync(driver);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ContainerExists(container.Id))
+                    if (!DriverExists(driver.Id))
                     {
                         return NotFound();
                     }
@@ -108,10 +108,10 @@ namespace Velocity.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(container);
+            return View(driver);
         }
 
-        // GET: Container/Delete/5
+        // GET: Driver/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -119,28 +119,28 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            Container container = await containerRepository.GetAsync(id.Value);
-            if (container == null)
+            var driver = await driverRepository.GetAsync(id.Value);
+            if (driver == null)
             {
                 return NotFound();
             }
 
-            return View(container);
+            return View(driver);
         }
 
-        // POST: Container/Delete/5
+        // POST: Driver/Delete/5
         [HttpPost, ActionName(nameof(Delete))]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            Container container = await containerRepository.GetAsync(id);
-            await containerRepository.DeleteAsync(container);
+            var driver = await driverRepository.GetAsync(id);
+            await driverRepository.DeleteAsync(driver);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ContainerExists(Guid id)
+        private bool DriverExists(Guid id)
         {
-            return containerRepository.Get(id) != null;
+            return driverRepository.Get(id) != null;
         }
     }
 }
