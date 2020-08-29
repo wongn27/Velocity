@@ -37,11 +37,11 @@ namespace Velocity.Data
     {
         public Guid Id { get; set; }
         [Required]
-        [DisplayName("First Name")]
+        [Display(Name = "First Name")]
         [Description("The first name of the driver.")]
         public string FirstName { get; set; }
         [Required]
-        [DisplayName("Last Name")]
+        [Display(Name = "Last Name")]
         [Description("The last name of the driver.")]
         public string LastName { get; set; }
     }
@@ -51,12 +51,12 @@ namespace Velocity.Data
         public Guid Id { get; set; }
 
         [Required]
-        [DisplayName("Name")]
+        [Display(Name = "Name")]
         [Description("The name of the fee.")]
         public string Name { get; set; }
 
         [Required]
-        [DisplayName("Default Amount")]
+        [Display(Name = "Default Amount")]
         [Description("The default amount for this fee.")]
         public decimal DefaultAmount { get; set; }
     }
@@ -86,11 +86,11 @@ namespace Velocity.Data
         public Invoice Invoice { get; set; }
 
         [NotMapped]
-        [DisplayName("Transit State")]
+        [Display(Name = "Transit State")]
         [Description("Whether the container is in transit.")]
         public TransitState TransitState { get; set; }
 
-        [DisplayName("In Transit")]
+        [Display(Name = "In Transit")]
         [Description("Whether the container is in transit.")]
         public bool IsPending { get; set; }
     }
@@ -110,53 +110,53 @@ namespace Velocity.Data
         public Container Container { get; set; }
 
         [Required]
-        [DisplayName("Rate")]
+        [Display(Name = "Rate")]
         [Description("The rate for this invoice detail entry.")]
         public decimal Rate { get; set; }
 
         [Required]
-        [DisplayName("Amount")]
+        [Display(Name = "Amount")]
         [Description("The amount for this invoice detail entry.")]
         public decimal Amount { get; set; }
 
         [Required]
         [StringLength(400)]
-        [DisplayName("Master Number")]
+        [Display(Name = "Master Number")]
         [Description("The steamship line unique identifer.")]
         public string MasterNumber { get; set; }
 
         [Required]
         [StringLength(400)]
-        [DisplayName("House Number")]
+        [Display(Name = "House Number")]
         [Description("The optional steamship line unique identifer extension.")]
         public string HouseNumber { get; set; }
 
         [Required]
         [StringLength(400)]
-        [DisplayName("Pick Up")]
+        [Display(Name = "Pick Up")]
         [Description("The pick up location of the container. Can be from the terminal or steamship line.")]
         public string FromAddress { get; set; }
 
         [Required]
         [StringLength(400)]
-        [DisplayName("Drop Off")]
+        [Display(Name = "Drop Off")]
         [Description("The drop off location of the container.")]
         public string ToAddress { get; set; }
 
         [Required]
         [Timestamp]
-        [DisplayName("Fee From Date")]
+        [Display(Name = "Fee From Date")]
         [Description("The beginning date for the fee.")]
         public DateTime FeeFromDate { get; set; }
 
         [Required]
         [Timestamp]
-        [DisplayName("Fee To Date")]
+        [Display(Name = "Fee To Date")]
         [Description("The end date for the fee.")]
         public DateTime FeeToDate { get; set; }
 
         [StringLength(400)]
-        [DisplayName("Reference Number")]
+        [Display(Name = "Reference Number")]
         [Description("The reference number as part of the invoice.")]
         public string ReferenceNumber { get; set; }
     }
@@ -166,13 +166,13 @@ namespace Velocity.Data
         public Guid Id { get; set; }
 
         [Required]
-        [DisplayName("Invoice Number")]
+        [Display(Name = "Invoice Number")]
         [Description("The invoice number for the invoice.")]
         public int InvoiceNumber { get; set; }
 
         [Required]
         [Timestamp]
-        [DisplayName("Invoice Date")]
+        [Display(Name = "Invoice Date")]
         [Description("The date of the invoice.")]
         public DateTime InvoiceDate { get; set; }
 
@@ -183,12 +183,12 @@ namespace Velocity.Data
 
         [Required]
         [StringLength(50)]
-        [DisplayName("Terms")]
+        [Display(Name = "Terms")]
         [Description("The terms for the invoice.")]
         public string Terms { get; set; }
 
         [Required]
-        [DisplayName("Total Invoice")]
+        [Display(Name = "Total Invoice")]
         [Description("The total invoice of days the chassis is rented.")]
         public decimal TotalInvoice { get; set; }
     }
@@ -198,17 +198,17 @@ namespace Velocity.Data
         public Guid Id { get; set; }
 
         [Required]
-        [DisplayName("Container Number")]
+        [Display(Name = "Container Number")]
         [Description("The unique number of the container.")]
         public string ContainerNumber { get; set; }
 
         [Required]
-        [DisplayName("Weight")]
+        [Display(Name = "Weight")]
         [Description("The weight of the container.")]
         public float? Weight { get; set; }
 
         [Required]
-        [DisplayName("Number of Cartons")]
+        [Display(Name = "Number of Cartons")]
         [Description("The number of cartons contained in the container.")]
         public int CartonsCount { get; set; }
     }
@@ -219,6 +219,7 @@ namespace Velocity.Data
 
         [Required]
         [StringLength(100)]
+        [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
 
         [Required]
@@ -231,6 +232,7 @@ namespace Velocity.Data
 
         [Required]
         [MaxLength(5)]
+        [Display(Name = "Zip Code")]
         public string ZipCode { get; set; }
 
         [Required]
@@ -241,6 +243,7 @@ namespace Velocity.Data
         [Phone]
         [Required]
         [MaxLength(15)]
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
     }
 }
