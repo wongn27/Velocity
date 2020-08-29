@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Velocity.Core.Repository;
 using Velocity.Data;
+using Velocity.Data.Models;
 
 namespace Velocity.Web.Controllers
 {

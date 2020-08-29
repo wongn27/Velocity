@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Velocity.Core.Repository;
 using Velocity.Data;
+using Velocity.Data.Models;
 
 namespace Velocity.Web.Controllers
 {
@@ -19,6 +20,7 @@ namespace Velocity.Web.Controllers
         // GET: Invoice
         public async Task<IActionResult> Index()
         {
+            //invoiceRepository.GetInvoiceDetails(await invoiceRepository.GetAll().FirstAsync());
             return View(await invoiceRepository.GetAllAsync());
         }
 
@@ -50,7 +52,7 @@ namespace Velocity.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,InvoiceNumber,Weight,CartonsCount")] Invoice invoice)
+        public async Task<IActionResult> Create([Bind("Id,InvoiceNumber,InvoiceDate,Client,Terms,TotalInvoice")] Invoice invoice)
         {
             if (ModelState.IsValid)
             {

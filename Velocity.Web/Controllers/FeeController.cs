@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Velocity.Core.Repository;
-using Velocity.Data;
 
 namespace Velocity.Web.Controllers
 {
     public class FeeController : Controller
     {
-        private readonly FeeRepository FeeRepository;
+        private readonly FeeRepository feeRepository;
 
-        public FeeController(FeeRepository FeeRepository)
+        public FeeController(FeeRepository feeRepository)
         {
-            this.FeeRepository = FeeRepository;
+            this.feeRepository = feeRepository;
         }
 
         // GET: Fee
         public async Task<IActionResult> Index()
         {
-            return View(await FeeRepository.GetAllAsync());
+            return View(await feeRepository.GetAllAsync());
         }
 
         // GET: Fee/Details/5
@@ -30,7 +28,7 @@ namespace Velocity.Web.Controllers
                 return NotFound();
             }
 
-            var fee = await FeeRepository.GetAsync(id.Value);
+            var fee = await feeRepository.GetAsync(id.Value);
             if (fee == null)
             {
                 return NotFound();
