@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Velocity.Data;
+using Velocity.Data.Models;
 
 namespace Velocity.Core.Repository
 {
