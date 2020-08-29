@@ -1,4 +1,5 @@
-﻿using Velocity.Data;
+﻿using System.Collections.Generic;
+using Velocity.Data;
 
 namespace Velocity.Core.Repository
 {
