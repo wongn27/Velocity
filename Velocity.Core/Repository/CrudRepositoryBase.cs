@@ -107,15 +107,27 @@ namespace Velocity.Core.Repository
 
         public async Task<IQueryable<TModel>> GetAsync(Expression<Func<TModel, bool>> predicate)
         {
-            return Model.Where(predicate).AsQueryable();
+            var models = await Model.Where(predicate).ToArrayAsync();
+            return models.AsQueryable();
+        }
+
+        public IQueryable<TModel> GetAll()
+        {
+            return Model;
+        }
+
+        public async Task<IQueryable<TModel>> GetAllAsync()
+        {
+            var models =  await Model.ToArrayAsync();
+            return models.AsQueryable();
         }
 
         public void Update(TModel model)
         {
-            if (model is null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
+                if (model is null)
+                {
+                    throw new ArgumentNullException(nameof(model));
+                }
 
             Model.Attach(model);
             Model.Update(model);

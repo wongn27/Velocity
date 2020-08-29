@@ -21,6 +21,8 @@ namespace Velocity.Core.Interfaces
         public Task<TModel> GetAsync(Guid id);
         public IQueryable<TModel> Get(Expression<Func<TModel, bool>> predicate);
         public Task<IQueryable<TModel>> GetAsync(Expression<Func<TModel, bool>> predicate);
+        public IQueryable<TModel> GetAll();
+        public Task<IQueryable<TModel>> GetAllAsync();
 
     }
 }
