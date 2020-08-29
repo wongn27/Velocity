@@ -1,4 +1,5 @@
-﻿@model Velocity.Data.Invoice
+﻿@using Velocity.Data.Models
+@model Velocity.Data.Models.Invoice
 
 @{
     ViewData["Title"] = "Create";
@@ -16,6 +17,14 @@
                 <label asp-for="InvoiceNumber" class="control-label"></label>
                 <input asp-for="InvoiceNumber" class="form-control" />
                 <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InvoiceDate" class="control-label"></label>
+                <input asp-for="InvoiceDate" class="form-control" />
+                <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+
             </div>
             <div class="form-group">
                 <label asp-for="Terms" class="control-label"></label>
