@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Velocity.Data;
+using Velocity.Data.Models;
 
 namespace Velocity.Core
 {
@@ -17,7 +18,7 @@ namespace Velocity.Core
             strBuilder
                 .Append("HDR").Append("\t").Append("INVOICE DATE").Append("\t").AppendLine()
                 .Append("!HDR").Append("\t").Append(invoices.First().InvoiceDate.ToString("YYYYMMDD"));
-            foreach (Invoice invoice in invoices)
+            foreach (var invoice in invoices)
             {
                 strBuilder
                     .Append("TRANS").Append("\t").Append("INVOICE DATE").Append("\t").AppendLine()
