@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Velocity.Data;
 
 namespace Velocity.Data.Migrations
 {
     [DbContext(typeof(VelocityContext))]
-    partial class VelocityContextModelSnapshot : ModelSnapshot
+    [Migration("20200829233944_ModelChanges")]
+    partial class ModelChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,6 +42,9 @@ namespace Velocity.Data.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<Guid?>("InvoiceId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(15)")
@@ -56,6 +61,8 @@ namespace Velocity.Data.Migrations
                         .HasMaxLength(5);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
 
                     b.ToTable("Clients");
                 });
@@ -145,8 +152,6 @@ namespace Velocity.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
-
                     b.ToTable("Invoices");
                 });
 
@@ -207,10 +212,6 @@ namespace Velocity.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContainerId");
-
-                    b.HasIndex("InvoiceId");
-
                     b.ToTable("InvoiceDetails");
                 });
 
@@ -231,50 +232,14 @@ namespace Velocity.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContainerId");
-
-                    b.HasIndex("InvoiceId");
-
                     b.ToTable("Transits");
                 });
 
-            modelBuilder.Entity("Velocity.Data.Models.Invoice", b =>
+            modelBuilder.Entity("Velocity.Data.Models.Client", b =>
                 {
-                    b.HasOne("Velocity.Data.Models.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Velocity.Data.Models.InvoiceDetail", b =>
-                {
-                    b.HasOne("Velocity.Data.Models.Container", "Container")
-                        .WithMany()
-                        .HasForeignKey("ContainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Velocity.Data.Models.Invoice", "Invoice")
-                        .WithMany()
-                        .HasForeignKey("InvoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Velocity.Data.Models.Transit", b =>
-                {
-                    b.HasOne("Velocity.Data.Models.Container", "Container")
-                        .WithMany()
-                        .HasForeignKey("ContainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Velocity.Data.Models.Invoice", "Invoice")
-                        .WithMany()
-                        .HasForeignKey("InvoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Velocity.Data.Models.Invoice", null)
+                        .WithMany("Clients")
+                        .HasForeignKey("InvoiceId");
                 });
 #pragma warning restore 612, 618
         }

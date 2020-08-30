@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Velocity.Data.Interfaces;
 
 namespace Velocity.Data.Models
@@ -22,9 +23,10 @@ namespace Velocity.Data.Models
         public DateTime InvoiceDate { get; set; }
 
         [Required]
+        [ForeignKey("Client")]
         public Guid ClientId { get; set; }
 
-        public IEnumerable<Client> Clients { get; set; }
+        public Client Client { get; set; }
 
         [StringLength(50, MinimumLength = 0)]
         [Display(Name = "Terms")]

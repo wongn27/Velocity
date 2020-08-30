@@ -36,5 +36,7 @@ namespace Velocity.Data.Models
         [MaxLength(15)]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+
+        public string TypeOfClient { get; set; }
     }
 }

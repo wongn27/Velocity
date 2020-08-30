@@ -13,10 +13,16 @@ namespace Velocity.Data.Models
         public Guid Id { get; set; }
 
         [Required]
+        [ForeignKey("Container")]
         public Guid ContainerId { get; set; }
 
+        public Container Container { get; set; }
+
         [Required]
+        [ForeignKey("Invoice")]
         public Guid InvoiceId { get; set; }
+
+        public Invoice Invoice { get; set; }
 
         [NotMapped]
         [Display(Name = "Transit State")]

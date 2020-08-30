@@ -11,14 +11,20 @@ namespace Velocity.Data.Models
         public Guid Id { get; set; }
 
         [Required]
+        [ForeignKey("Invoice")]
         public Guid InvoiceId { get; set; }
+
+        public Invoice Invoice { get; set; }
+
+        [ForeignKey("Container")]
+        public Guid ContainerId { get; set; }
+
+        public Container Container { get; set; }
 
         public int Quantity { get; set; }
 
         [NotMapped]
         public string Description { get; }
-
-        public Guid ContainerId { get; set; }
 
         [Required]
         [Display(Name = "Rate")]
