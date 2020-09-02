@@ -7,16 +7,16 @@ namespace Velocity.Core.Repository
 {
     public class InvoiceDetailRepository : CrudRepositoryBase<InvoiceDetail>
     {
-        private InvoiceRepository invoiceRepository;
+        private readonly Lazy<InvoiceRepository> invoiceRepository;
 
         public InvoiceDetailRepository(VelocityContext context) : base(context)
         {
-            invoiceRepository = new InvoiceRepository(context);
+            invoiceRepository = new Lazy<InvoiceRepository>(() => new InvoiceRepository(context));
         }
 
         public IQueryable<InvoiceDetail> GetInvoiceDetails(Guid invoiceId)
         {
-            var invoice = invoiceRepository.Get(invoiceId);
+            var invoice = invoiceRepository.Value.Get(invoiceId);
 
             if (invoice is null)
             {

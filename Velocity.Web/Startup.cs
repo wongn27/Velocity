@@ -27,6 +27,7 @@ namespace Velocity.Web
             services.AddScoped<DriverRepository>();
             services.AddScoped<FeeRepository>();
             services.AddScoped<InvoiceRepository>();
+            services.AddScoped<InvoiceDetailRepository>();
             services.AddScoped<TransitRepository>();
         }
 
