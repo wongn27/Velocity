@@ -14,6 +14,10 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
+                <label asp-for="Client" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Client.CompanyName, new SelectList(Model.Clients, Model.Client), Model.Client.CompanyName)
+            </div>
+            <div class="form-group">
                 <label asp-for="InvoiceNumber" class="control-label"></label>
                 <input asp-for="InvoiceNumber" class="form-control" />
                 <span asp-validation-for="InvoiceNumber" class="text-danger"></span>

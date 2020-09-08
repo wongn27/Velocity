@@ -3,12 +3,23 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using Velocity.Data.Interfaces;
 
 namespace Velocity.Data.Models
 {
     public class Invoice : IIdentity
     {
+        private readonly VelocityContext context;
+
+        public Invoice()
+        {
+
+        }
+        public Invoice(VelocityContext context)
+        {
+            this.context = context;
+        }
         public Guid Id { get; set; }
 
         [Required]
@@ -26,7 +37,10 @@ namespace Velocity.Data.Models
         [ForeignKey("Client")]
         public Guid ClientId { get; set; }
 
-        public Client Client { get; set; }
+        public Client Client { get => context.Clients.Find(ClientId); }
+
+        [NotMapped]
+        public IEnumerable<Client> Clients { get => context.Clients.AsEnumerable(); }
 
         [StringLength(50, MinimumLength = 0)]
         [Display(Name = "Terms")]

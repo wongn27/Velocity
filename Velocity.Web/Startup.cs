@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Velocity.Core.Repository;
 using Velocity.Data;
+using Velocity.Data.Models;
 
 namespace Velocity.Web
 {
@@ -29,6 +30,14 @@ namespace Velocity.Web
             services.AddScoped<InvoiceRepository>();
             services.AddScoped<InvoiceDetailRepository>();
             services.AddScoped<TransitRepository>();
+            services.AddScoped<Client>();
+            services.AddScoped<Container>();
+            services.AddScoped<Driver>();
+            services.AddScoped<Fee>();
+            services.AddScoped<Invoice>();
+            services.AddScoped<InvoiceDetail>();
+            services.AddScoped<Transit>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
